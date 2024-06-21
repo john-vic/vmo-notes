@@ -258,4 +258,60 @@ Contents
 
 ## L3 - Generalized Troubleshooting Concepts
 
-> - 
+> - Goals
+>   - Comprehend Administrative Troubleshooting Tools
+>   - Comprehend Server Tool Troubleshooting
+>   - Comprehend Credential Troubleshooting
+
+> - Administrative Troubleshooting Tools
+>   - Wireshark
+>       - Network traffic monitoring tool
+>       - Compatable with many OSs & a majority of known protocols
+>       - Powerful filter system & clear, logical GUI
+>   - Microsoft Message Analyzer (MMA)
+>       - A Wireshark alternative
+>       - Can also report system call traces, allowing you to correlate local application & network activity
+>       - Allows you to save & reload captures, aggregate these saves, and analyze data from trace files
+>   - Clonezilla
+>     - Free & open-source disk cloning & backup/disaster recovery tool
+>     - 2 distributions
+>         - Clonezilla live
+>             - Single-machine backup & restore
+>         - Clonezilla SE
+>             - Server-scale deployments
+>     - High speed backup & cloning, quick & easy to start
+>     - Supports a variety of file systems
+>     - Great for one-time reservation operations
+>     - Does not distinguish software RAID, breaks files into separate devices
+>   - Notepad ++
+>       - Subjective quotes presented as Facts
+>           - "One of the best text editors ever."
+>           - "Great for working with code."
+>       - Customizable medium-dependent interface, custom highlighting of code syntax, colapsable blocks, & support for regular expressions in searches
+>       - Best feature is quick response time when working with large files
+>   - PuTTy
+>       - Lightweight, fast terminal emulator for configuring routers, switches, & servers remotely
+>       - Supports SSH, SCP, & rlogin protocols, multiple OSs, and many variations of the secure remote terminal
+>       - Provides user control over the SSH encryption key & protocol version, as well as alternate ciphers
+>       - Network communication layer supports IPv6
+>       - Comes bundled with pscp, psftp, & plink
+
+> - Server Troubleshooting
+>   - ping
+>       - Ideal command to confirm network connectivity at the IP level
+>       - Also gives packet loss reports
+>       - You can also ping your own machine to test the TCP/IP stack to find out if the issue isn't even on the network
+>   - ipconfig
+>       - Allows you to quickly & conveniently determine the machine's IP settings
+>       - Returns IPv4 & IPv6 addresses, subnets, & default gateways
+>   - netstat
+>       - Displays all active TCP connections on the machine, with paramaters to display aditional information, like the TCP & UDP ports being listened to
+>       - Useful when troubleshooting users being unable to connect to specific services
+>   - nslookup
+>       - Enables DNS troubleshooting & diagnostics
+>       - Available on Windows & Unix consoles
+>       - Returns information on the DNS server from the given address
+>   - nmap
+>       - Security auditing & network exploration tool
+>       - Most commonly used for security scans & penetration testing
+>       - Runs in the command line, but does have an official GUI, Zenmap
