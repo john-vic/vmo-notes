@@ -142,7 +142,115 @@ Contents
 
 ## L2 - Orders Process
 
-> - 
+> - Goals
+>   - Differentiate order types between TASKORD, IAVA, TCNO, & MTO
+>       - TASKORD - USCYBERCOM operation-level direction
+>       - IAVA - IAVM notification of an imminent/current vulnerability threat to DoD systems that requires acknowledgement & remediation
+>   - Define purpose of STIGs
+>       - DoD implementation guides for specific products/versions to meet DoD baseline requirements
+>   - Define CVEs in correlation with IAVAs
+>       - CVE Published -> ACAS Plugin -> New Vulnerability scanning capabilities -> New potential IAVAs for those vulnerabilities
+>   - Discuss CVE originating authorities
+>       - CVE authorities are segmented into partner roles & responsibilities, defining what they contribute to the CVE Program and what's expected of them
+>   - Define interaction of plugins within ACAS on addressing CVEs
+>       - ACAS plugins are CVEs translated into an automated scanning & remediation process, expanding ACAS capabilities to cover new CVEs
+
+> - Order Types
+>   - Cyber Control Orders (CCO) aka CTOs
+>       - Directive to build or shape cyberspace in support of AF or combatant commander's mission assurance objective
+>       - Highest priority
+>   - Time Compliance Network Orders (TCNO)
+>       - Direct immediate patching of systems to mitigate vulnerabilities
+>       - For sensitive vulnerabilities that need fixed in a timely manner
+>       - AMAC-assigned TCNO Priorities
+>           - Critical
+>               - Widespread, imminent/ongoing threat to AFIN & operations
+>           - Serious
+>               - Widespread threat to the AFIN, supported operations is expected
+>           - Moderate
+>               - Possible threat to the AFIN
+>               - May be mitigated by factors like difficulty of exploitation or limited use of vulnerable systems
+>       - AMAC generates TCNO internally or in response to IAVAs or IAVBs
+>           - Information Assurance Vulnerability Management(IAVM)
+>               - IVAM notifications announce software or OS vulnerabilities as Alerts (IAVA) & Bulletins (IAVB)
+>           - Information Assurance Vulnerability Alert (IAVA)
+>               - Notifications generated when a vulnerability may result in an immediate, severe threat to DoD systems & information
+>               - Requires acknowledgement & corrective action
+>           - Information Assurance Vulnerability Bulletin (IAVB)
+>               - Addresses new vulnerabilities that don't pose an immediate risk to DoD systems, but could be escalated by non-compliance
+>               - Requires acknowledgement, corrective action recommended, not required unless specified
+>   - Maintenance Tasking Orders (MTO)
+>       - Routine task that enhances network security
+>       - Medium/low risk task
+>   - 616 OC & AMAC may release informational reports
+>       - C4 NOTAM (C2, Communications & Computers Notice to Airmen)
+>       - Friendly Forces Information Requirements (FFIR)
+>       - Commander's Critical Information Requirements (CCIR)
+
+> - Security Technical Implementation Guides (STIGs)
+>   - Implementation guides geared for specific products & versions, based on DoD policy & security controls
+>   - Contains all requirements flagged applicable for the product that have been selected on a DoD baseline
+>   - Security Requirements Guides (SRGs)
+>       - Compilations of Control Correlation identifiers (CCIs), grouped in applicable, specific areas at various level of technology specificity
+>       - Contain all flagged requirements from the parent level regardless of if they are selected on a DoD baseline
+>   - Control Correlation Identifiers (CCIs)
+>       - Decompositions of NIST control into a single actionable & measurable statement
+>       - Bridges the gap between high-level policy & low-level technical implementations
+>   - DISA STIGs Word Soup
+>       - *"DoD cybersecurity & cyberspace defense data strategy will enable semantic, technical & policy interoperability through a standards-based approach"*
+
+> - Common Vulnerabilities & Exposures (CVEs)
+>   - Identify, define, & catalog publicly disclosed cybersecurity vulnerabilities
+>   - Vulnerabilities discovered, assigned, & published by CVE Program partners worldwide
+>   - CVE IDs
+>       - Unique alphanumeric identifiers that reference specific vulnerabilities, enabling automation and allowing multiple parties to discuss & correlate information about specific vulnerabilities
+>       - Typically included in IAVA/Bs that include publically disclosed vulnerabilities
+>   - CVE Records
+>       - Used by technology & CS professionals to ensure they are discussing the same issue & coordinate efforts to prioritize & address vulnerabilities
+>       - One per vulnerability in the catalog
+>       - Published by partners to communicate consistent descriptions of vulnerabilities
+>       - CVE Record States
+>           - Reserved
+>               - Initial state of a record; ID being reserved for later use
+>           - Published
+>               - Data associated with an ID is populated to its Record
+>               - Must contain ID, prose description, & public reference
+>           - Rejected
+>               - Record should no longer be used, but is kept to prevent rediscovery of the same legacy data
+>           - CVE List
+>               - Catalog of all Records
+>   - National Vulnerability Database (NVD)
+>       - US government repository of standards-based vulnerability management data represented using the Security Content Automation Protocol (SCAP)
+>       - Data enables automation of vulnerability management, security measurement, & compliance
+>       - Includes databases of security checklist references, software flaws, misconfigurations, product names, & impact metrics
+>       - May have extra information on a CVE
+
+> - CVE Originating Authorities
+>   - CVE Program Partner Roles
+>       - Authorized Data Publisher (ADP)
+>           - Expand existing CVE Records (within scope)
+>       - CVE Numbering Authority (CNA)
+>           - Assigns IDs to vulnerabilities, creates/publishes information in the associated Record 
+>       - CNA of Last Resort (CNA-LR)
+>           - Acts as CNA for vulnerabilities outside the scope of regular CNAs
+>       - Root
+>           - Recruitment, training, & governance of CNAs, CNA-LRs, & other Roots within governing Root's scope
+>       - Top-Level Root
+>           - Does not report to another root, responsible to the CVE Board
+>   - CVE Program Partner Responsibilities
+>       - Bug Bounty Programs - Assign CVE IDs to entities utilizing the Bug Bounty service
+>       - Hosted Services - Assign CVE IDs to vulnerabilities found in own services
+>       - National & Industry CERTs - Incident response & vulnerability disclosure services for nations & industries
+>           - May assign CVE CVE IDs
+>       - Vendors & Projects - Assigns CVE IDs for vulnerabilites found in their own products
+>       - Vulnerability Researchers
+>           - Independents - Assigns CVE IDs to products & projects, subject to review by the CVE Board
+>           - Organizations - Assigns CVE IDs to products & projects
+
+> - ACAS Plugins
+>   - Covers one or more CVE IDs, allowing an ACAS scan to include new vulnerabilities
+>   - Designed by Tenable Research
+>   - Contains vulnerability information, simplified remediation actions, and a testing algorithm for the security issue
 
 ---
 
