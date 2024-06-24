@@ -143,4 +143,214 @@ Contents
 
 ## L2 - ACAS Hierarchy Structure
 
+> - Goals
+>   - Explain ACAS Hierarchy Structure
+
+> - Hosting
+>   - It is recommended that all ACAS components be deployed on discrete hosts with no non-cybersecurity software installed, as these components will likely utilized the entire resource pool of the host
+>   - In small environments (<2000 hosts>), deploying 2 or 3 components on a single host may be feasible
+>   - In virtualized environments, a 35% overage in CPU & RAM is recommended to cover loss due to virtualization
+> - Licensing
+>   - Tenable.sc, Nessus Manager, & LCE require a separate license or activation code, which are requested by deployed sites & fulfilled by DISA
+>   - Tenable.sc is licensed by the total number of unique active IP addresses it manages & the hostname of the system on which it is installed
+> - Interface
+>   - The Tenable, Nessus, & NNM web interface can be launched via browser & uses HTML5
+>   - To launch the web interface on a STIG-configured browser, the URL must be added to the browser's trusted sites
+
+> - Tenable Requirements
+>   - The more active users there are, the more memory & processor cores you want
+>   - RAID arrays and/or SSDs are ideal
+>   - Adequate disk space is critical
+>       - Tenable saves snapshots of the vulnerability archive daily
+>       - Vulnerability data size varies with the number & types of vulnerabilities, in adition to number of hosts
+>       - The output for some plugins are much larger than others
+>       - Active scan sessions of 35000-50000 hosts can consume as much as 150 GB of disk space, which is taken until the scan is complete & results are imported
+> - Nessus Scanner Requirements
+>   - Resource requirements to consider include raw IP address count & the configuration of the scanner deployment
+>   - No configuration can be assured to scan a specific number of hosts per hour
+>   - The ability to scan a given number of hosts rests heavily on the memory & processor power; more hadware = more speed
+>   - Bandwidth Availability & Latency
+>       - Seriously impacts scanner performance
+>       - Scanning can easily overload networks that are at or near capacity
+>           - Host processing power & number of vulnerabilities also affect performance; the scanner may wait longer on a slow host to return its results
+>       - Deploy 1 scanner per 2000-4000 hosts and/or 16000 IPs
+>       - A scanner should not be assigned to multiple scan zones
+>           - The UI has options for this, but the feature is know to cause performance & availability issues
+>           - IP ranges within a scan zone can overlap, which may slow overall performance, but is generally insignificant
+
+---
+
+<br>
+
+## L3 - ACAS Tool Functions
+
+> - Goals
+>   - Discuss ACAS tool deployment considerations
+>   - Discuss ACAS OPORD
+> - ACAS OPORD
+>   - JFHQ-DODIN TASKORD 20-0020
+>       - *Implementation requirements & obligations*
+>       - Structure
+>           - Identify Organizational / Site IP Space and Hosts
+>               - Global IP Space Documentation
+>               - Program of Record IP Space Documentation
+>           - Conduct Discovery Operations
+>               - Active Discovery Operations
+>               - Passive Discovery Operations
+>           - Monitoring Network Services and Server Subnets/VLANs
+>           - Monitoring Egress Points and External Network Connections
+>           - Monitoring Network Core for Unused IP Space
+>               - Discovery Scan Result Review
+>           - Conduct Active Scans
+>               - Active Scan Policy
+>               - Active Scan Settings
+>               - Active Scan Deviations
+>                   - Credential Use
+>               - Vulnerability Scan Result Review
+>                   - Good Data
+>                   - Bad Scan, Local Checks Failed (Unsatisfactory)
+>                   - Plugins for Troubleshooting
+>           - Host Coverage and Data Retention
+>           - Configuration Scanning Requirements
+>           - Agent Scanning
+>               - Viewing Agent Scan Data in Tenable Security Center
+>               - Scan Data in Tenable Security Center
+>           - NNM TASKORD Requirement
+>           - Publishing Compliance Objectives
+>               - Area of Operations Modification for Report Attribute Configurations
+>           - TASKORD Exemption Criteria
+>   - Each site must ID, document, & scan DoD owned or operated endpoints
+>   - Each organization/site will maintain a master Asset List covering the organization/site IP space
+>   - If an organization maintains multiple Tenable servers, they will maintain asset lists on each of them which includes the portion of the IP space the Tenable is responsible for
+
+---
+
+<br>
+
+## L4 - ACAS Administrator Responsibilities
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L5 - Role-based Access Control
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L6 - DEMO - Role-based Access Control
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L7 - ACAS Repository Functions
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L8 - ACAS Repositories
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L9 - DEMO - ACAS Repositories
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L10 - ACAS Active Scan Objects
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L11 - ACAS Active Scan Management: Nessus Scanner
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L12 - DEMO - ACAS Active Scan
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L13 - Queries & Reports: Demo Query within ACAS
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L14 - Queries & Reports: Demo Reports within ACAS
+
+> - Goals
+>   - 
+
+> - 
+
+---
+
+<br>
+
+## L15 - ACAS Self-Diagnosis
+
+> - Goals
+>   - 
+
 > - 
