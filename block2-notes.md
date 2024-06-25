@@ -230,9 +230,49 @@ Contents
 ## L4 - ACAS Administrator Responsibilities
 
 > - Goals
->   - 
+>   - Define an organization within ACAS
+>   - Explain how organizations are used within ACAS
+>   - Define a scan zone within ACAS
+>   - Explain how scan zones are used within ACAS
+>   - Define a repository within ACAS
+>   - Explain how a repository is used within ACAS
+>   - Define the role of a Security Manager
+>   - Explain the function of the status circle within ACAS
 
-> - 
+> - ACAS Organization
+>   - A distinct set of users & groups, and the resources available to them
+
+> - Organization Functions
+>   - The organization is managed primarily by administrator users & security manager users
+>   - Administrator users create organization & creates, assigns, & maintains security manager user accounts
+>   - Security managers (or any org member with permisions) creates other users within the org
+>   - Groups allow you to manage users & share permissions to resources & objects among the group
+>   - Multiple orgs can share the same repos, & the vulnerability data within the overalapping ranges is shared between the orgs
+>   - Orgs can be given their own discrete repos to facilitate situations where data must be kept confidential between different orgs
+
+> - Scan Zones
+>   - Scan zones are areas of your network that you want to target in a scan
+>   - Scan zones associate an IP address, or range, with 1 or more scanners in a deployment
+>   - Scan zones must be created to run active scans in Tenable
+
+> - Repositories
+>   - Databases within Tenable that contain vulnerability data
+>   - Repos are a proprietary format
+>   - Repos can be shared w/ users & orgs based on admin-defined assets
+>   - Repos provide scalable & configurable data storage
+>   - Repo data can be shared between multiple Tenable instances
+
+> - Security Manager
+>   - An account that manages an individual organization, with a broad range of security roles within said org, including complete access to all the org's data
+>   - The initial user that is created when a new org is created
+>   - Has the ability to launch scans, configure users that aren't the admin, set vulnerability policies, and alter other objects in the org
+>   - The initial Sec Manager can't be deleted except by deleting the organization
+
+> - Status Circle
+>   - Within the settings of a Nessus scanner, the scanner health page provides info about a scanner
+>   - Real-time health & performance data can be used to assist scanner troubleshooting
+>   - Scanner alerts provide error information, updated every 30 seconds
+>   - Scanner status can be visualized into graphs, such as a circle graph of scanners grouped by status
 
 ---
 
@@ -241,20 +281,32 @@ Contents
 ## L5 - Role-based Access Control
 
 > - Goals
->   - 
+>   - Recall usage of organizations within ACAS
+>   - Define roles within ACAS
+>   - Explain when roles are useful within ACAS
+>   - Define groups within ACAS
+>   - Explain when groups are useful within ACAS
 
-> - 
+> - ACAS Organizations
+>   - A set of distinct groups & users and the resources they have access to
+>       - Users are assigned repositories & zones within 1 or more IP network
 
----
+> - ACAS Roles
+>   - Roles determine what a user has access to
+>   - Tenable.sc comes with 8 system-provided roles
+>   - VMO can customize permissions on some, but not all system-provided roles
+>   - VMO can configure linked user accounts
+>       - Administrators can switch to one or more Security Manager user accounts without logging out & back into Tenable
+>   - Administrator users can create Administrator or Security Manager user accounts
+>       - Organizational users can create Auditor, Credential Manager, Executive, No Role, Security Analyst, Security Manager, or Vulnerability Analyst accounts at their own privilege level or lower
 
-<br>
-
-## L6 - DEMO - Role-based Access Control
-
-> - Goals
->   - 
-
-> - 
+> - ACAS Groups
+>   - Refers to collections of users with the same permissions within an organization
+>   - User groups are a way to group rights to objects
+>   - Quickly assign & alter rights to one or more users
+>   - Group membership determines a user's access to security data
+>   - User creates various objects such as reports, scan policies, dashboards, & other similar items
+>   - Objects are automatically shared among the group members if the group permissions allow view & control
 
 ---
 
