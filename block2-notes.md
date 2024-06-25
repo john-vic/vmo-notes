@@ -315,9 +315,33 @@ Contents
 ## L7 - ACAS Repository Functions
 
 > - Goals
->   - 
+>   - Explain ACAS repository function
+>   - Discuss ACAS interaction with Continuous Monitoring Risk Scoring (CMRS)
+>   - Discuss ACAS interaction with other security solutions
 
-> - 
+> - Continuous Monitoring Risk Scoring (CMRS)
+>   - Web-based system that aggregates data from DoD end-point sensors
+>       - Endpoint Security System (ESS)
+>       - Assured Compliance Assessment Solutions (ACAS)
+>           - Near real-time risk assessment & continuous monitoring
+>   - CMRS's objective is to assess & measure the risk state of DoD IT systems in accordance w/ enterprise security controls like software/hardware inventory
+>       - Built to host DoD security info of mobile devices, workstations & servers, networked user support devices, network infrastructure
+>       - Platform ITs in a centralized location0
+>   - CMRS displays the status of what ESS modules & versions are deployed on devices across the DoD, & summaries of what extensions each ESS instance has installed
+>   - Device Search
+>       - CMRS allows users to find any info it contains about devices on the DoDIN by searching by MAC, IP, hostname, org, location, system, etc.
+>   - Software Inventory
+>       - CMRS can do enterprise-wide searches for vulnerable, outdated, or required software deployment
+>       - Collected from Asset Configurationn Compliance Module (ACCM) sensors by CMRS
+>   - At least 1 Tenable Security Center instance is required to publish data to CMRS
+>   - A base's entire Credentialed Repository will be published to CMRS weekly
+>   - Multiple orgs can share the same repo, & overlapping vulnerability data may be shared between them
+>   - Discrete repositories can facilitate situations where data musn't be available outside of your org
+
+> - Security Solutions with ACAS
+>   - The Nessus scanner forges packets & performs other tasks that will look malicius to most security software, which can cause problems if the Endpoint Security System (ESS) on a device isn't configured properly
+>       - The ACAS ESS Integration Guide provides guidance for properly configuring ESS
+>   - In instances where ESS is not used, it is on VMO to understand that deviations in configuration may cause unexpected scan results
 
 ---
 
@@ -326,9 +350,26 @@ Contents
 ## L8 - ACAS Repositories
 
 > - Goals
->   - 
+>   - Discuss deployment considerations for ACAS repositories
+>   - Explain the containable data types for local ACAS repositories
 
-> - 
+> - Deployment Considerations
+>   - Each repository can take up to 32 GB of storage
+>   - Tenable SC doesn't limit the number of repos, but it is a significant performance factor
+>   - Different file system options for Red Hat Enterprise Linux have different limitations on maximum partition size and maximum file count
+
+> - Data Types
+>   - Repos can only contain one of these data types
+>       - IPv4 addresses
+>       - IPv6 addresses
+>       - Mobile Device Management (MDM)
+>       - Nessus Agent
+>   - DISA recommends separate repos for these data types
+>       - Production Active scan, 
+>       - Passive traffic analysis data
+>       - Non-production (diagnostic or test) scan data
+>       - Ad-hoc scans
+>       - Agent data
 
 ---
 
@@ -337,9 +378,16 @@ Contents
 ## L9 - DEMO - ACAS Repositories
 
 > - Goals
->   - 
+>   - Discuss remote Repositories within ACAS
 
-> - 
+> - Remote Repositories
+>   - A repo copied from another Tenable SC system
+>   - Remote repos can allow a central Tenable SC to analyze & perform reporting against data copied from other Tenable SC systems
+>   - No scan data can be written into a Remote repo
+>       - VMO may only use remote repos for reporting purposes
+>   - Repo replication can copy up to the full repo size (32 GB) each day
+>       - Data volume & available bandwidth should be considered when multiple repos are being sync'd or if the source Tenable SC'sconnection has limited bandwidth
+>   - It may be tempting to create a centralized storage for sites with multiple Tenable SC deployments, but using replication to store two SC's worth of data into a single SC is unlikely to be successful
 
 ---
 
@@ -348,9 +396,73 @@ Contents
 ## L10 - ACAS Active Scan Objects
 
 > - Goals
->   - 
+>   - Define an Asset within ACAS
+>   - Differentiate template-based assets & custom asset types
+>   - Define credentials
+>   - Explain impact on credential availability by the user role of the credential creator
+>   - Discuss credential types supported within ACAS
+>   - Discuss authentication methods supported for credentials
+>   - Define audit files
+>   - Recall scanning for Vulnerability vs Compliance
+>   - Explain how audit files are used within ACAS
+>   - Recall usage of Scan Zones
+>   - Define Scan Policies
+>   - Discuss Advanced Options for configuration of Scan Policies
 
-> - 
+> - Assets
+>   - Lists of devices within a Tenable SC organization
+>   - Assets can be added to group devices that share common attributes, whic can then be used to target those devices during scan configuration
+>   - Template-based Assets
+>       - Vendor-provieded asset templates, customizable for an environment
+>       - Updated via Tenable SC feed & visible depending on other configurations
+>   - Custom Asset Types
+>       - | Type          | Description |
+>         | ----          | ----------- |
+>         | Static        | List of IPs |
+>         | DNS Name List | DNS hostnames for the asset |
+>         | LDAP Query    | Uses results from LDAP query string |
+>         | Combination   | Asset created based on existing assets & the AND/OR/NOT operators |
+>         | Dynamic       | Meets a flexible group of condition statements & refreshes based on scans |
+>         | Watchlist     | List of IPs NOT in managed range (ex. known external source of malicious activity) |
+>         | Import        | Imports previously exported asset file |
+
+> - Credentials
+>   - Reusable objeccts that facilitate a login to a scan target
+>   - Various types of credentials can be configured for use with scan policies
+>   - Tenable SC supports an unlimited number of SSH, Windows, & database credentials, & 4 SNMP credential sets per scan configuration
+>   - Credentials created by an admin are available to all orgs; ones created by org users are only available in that org
+>   - Users can share credentials, allowing them to scan remote hosts without knowing the host's credentials
+>   - If a scan contains multiple instances of one type of credential, it will go through the list in order added, stopping at the first one that works even if another credential has greater privileges
+>   - Supported Credential Types
+>       - API Gateway
+>       - Database
+>       - SNMP
+>       - SSH
+>       - Windows
+>   - Authentication methods within credential types have their own sets of authentication options
+>   - General Authentication Options
+>       - Name (Required) - Name of the credential
+>       - Description - Description of the credential
+>       - Tag - Tags of the credential
+>           - Tags label assets, policies, credentials, or queries with a custom descriptor to improve filtering & object management
+>           - After a tag is created & applied to an object, the tag is visible to all users who can view or modify the object, but tags are not shared across object types
+
+> - Audit Files
+>   - Proprietary formatted XML files that define how ACAS should check for compliance with a benchmark
+>       - Benchmarks describe a configuration specification; the DoD standard specification uses STIGs
+>   - Tenable distributes audit files via the Tenable SC Feed that is used to update the SC
+>   - SCAP files can be uploaded & used in the same way as an audit file
+>       - Still XML, but used a protocol defined by NIST
+>   - Audit files are used to perform authenticated configuration scans of all active IP space to include all IP addresses & ranges owned, operated, managed, or maintained by a DoD entity to conduct or support operations
+>       - Includes external contractor/vendor assets in DoD enclaves, both classified & unclassified, that align with DoD Component AOR
+>       - At a minimum, all DoD Components must run all DISA STIG audit files & custom audit files developed to support DoD secure configuration requirements
+>           - Includes audit files developed to check JFHQ-DODIN / CYBERCOM order compliance
+>       - Additional audits may be required based on OS, applications, & devices within a host
+
+> - Scan Policies
+>   - Contain plugin settings & advanced directives for active scans
+>   - Admin-created scan policies are available to all organizations within the Tenable deployment, while org user-created policies are only availabe to their org
+>   - Policy options specify granular configurations for active scans
 
 ---
 
@@ -359,9 +471,25 @@ Contents
 ## L11 - ACAS Active Scan Management: Nessus Scanner
 
 > - Goals
->   - 
+>   - Explain endpoint discovery within Nessus Scanner
+>   - Explain active scan scheduling
 
-> - 
+> - Endpoint Discovery
+>   - Performed to get an accurate picture of network assets
+>   - Examples
+>       - Scans using the Host Discovery template
+>       - Scans using discovery plugins
+>   - Scans are not scheduled by default; the Enable Schedule setting defaults to off
+>   - Schedule settings
+>       - | Setting | Description |
+>         | ------- | ----------- |
+>         | Frequency    | How often the scan is launched (Once, Daily, Weekly, Monthly, Yearly) |
+>         | Starts       | Specifies the exat date & time when a scan launches |
+>         | Timezone     | Specifies the timezone for Starts setting |
+>         | Repeat Every | Specify relaunch interval (defaults by Frequency) |
+>         | Repeat On    | For Weekly Frequency, specifies day of week |
+>         | Repeat By    | For Monthly Frequency, specifies day of month |
+>         | Summary      | Provides summary of schedule settings |
 
 ---
 
@@ -370,9 +498,28 @@ Contents
 ## L12 - DEMO - ACAS Active Scan
 
 > - Goals
->   - 
+>   - Explain resource considerations for scanning within Nessus Scanner
+>   - Explain how a plugin is used within ACAS
+>   - Explain the update process for a plugin
 
-> - 
+> - Resource Consideration
+>   - Scans, reports, & dashboards all require RAM & CPU allocations on run, which may cause the UI to slow down when they run
+>   - Moving reports & scans to after-hours will minimize impact to users
+>   - System administrators should periodically review scheduled tasks to ensure they do not overlap
+>   - Tenable SC doesn't try to distribute tasks scheduled for the same time
+>       - Tenable SC will attempt to distribute the load for simultaneous tasks across available Nessus scanners, but this may adversely affect performance
+>   - When possible, sites should avoid concurrent scan jobs, ensuring a 15 minute buffer between scheduled tasks
+
+> - Plugins Purpose & Usage
+>   - In adition to vulnerabilty scanning, plugins are also used to obtain configuration information from authenticated hosts for configuration audit purposes
+>   - Plugin options let you select security checks by individual plugins or plugin family
+>   - When a scan policy is created or altered, it records all selected plugins
+>   - When a plugin update is recieved, new plugins are automatically enabled if they fall under an enabled plugin family; they are automatically disabled in the case they fall under a disabled or mixed plugin family
+
+> - Plugin Updates
+>   - Plugins for Tenable SC can be updated from a plugin server automatically, by manual refresh, or via individual plugin downloads from the DoD Patch Repository
+>   - DISA plugin servers & Patch Repositories are updated daily
+>   - Contractually, plugins should be updated with IAVM data within 48 hours of the IAVM announcement
 
 ---
 
