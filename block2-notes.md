@@ -409,6 +409,9 @@ Contents
 >   - Define Scan Policies
 >   - Discuss Advanced Options for configuration of Scan Policies
 
+> - Active Scan Objects
+>   - Assets, Credentials, & Policies
+
 > - Assets
 >   - Lists of devices within a Tenable SC organization
 >   - Assets can be added to group devices that share common attributes, whic can then be used to target those devices during scan configuration
@@ -528,9 +531,35 @@ Contents
 ## L13 - Queries & Reports: Demo Query within ACAS
 
 > - Goals
->   - 
+>   - Define a query within ACAS
+>   - Explain how filters are used within a query or report
+>   - Descibe the types of data that can be extracted using a query
+>   - Describe dashboard customization within ACAS
 
-> - 
+> - Query
+>   - Provides the ability to save custom views of vulnerability, event, ticket, user, & alert data for repeated acess
+>   - Filters & queries can be used to manipulated data seen in analysis tools & save views
+>   - Workflow Actions (alerting, ticketing, accepting/recasting risk) can be performed from some analysis tools
+>   - After a filter is built & applied, the filter icon number indicates the number of filters applied to the list
+>   - Filters can be built using 1 or more components (types of data, ex. CVE IDs) with defined filter component criteria (specific data, ex. a specific CVE ID)
+>   - Create a Query to save a filter for repeated use
+>   - Queries can be components within other ACAS capabilities, like automating emails for alerts that meet a query, or generating a daily report with a query of active alerts
+>   - Analysis tools for analyzing & responding to Tenable SC data
+>       - | Tool                   | Description |
+>         | ---------------------- | ----------- |
+>         | Scan Results           | View a table of scan results from active & agent scans |
+>         | Dashboards             | View graphical summaries of scans, scan results, & system activity |
+>         | Solution Analysis      | Veiw recommended solutions for all vulnerabilities on your network |
+>         | Vulnerability Analysis | View a table of cumulative or mitigated vulnerability data |
+>         | Event Analysis         | View a table of Log Correlation Engine security event data |
+>         | Mobile Analysis        | View a table of vulnerability data discovered by scanning an ActiveSync, Apple Profile Manager, AirWatch, Good, or MobileIron MDM server |
+>         | Reports                | Create custom or template-based reports to export Tenable SC data for further analysis |
+>         | Assurance Report Cards | Create ARCs to develop security program objectives & assess your org's security posture |
+
+> - Dashboard ACAS
+>   - Dashboard components are the product of queries of scan data from repositories
+>   - It is more effective to have a single user develop & share dashboards suited to their tasks than to have each user create their own
+>   - Users should be advised to configure dashboards with less frequent updates to lessen the performance impact of dashboard queries
 
 ---
 
@@ -539,9 +568,25 @@ Contents
 ## L14 - Queries & Reports: Demo Reports within ACAS
 
 > - Goals
->   - 
+>   - Explain what a report is within ACAS
+>   - Explain when a report would be useful within ACAS
+>   - Explain the different types of data you can collect in a report
+>   - Explain the different report formats
 
-> - 
+> - Reports
+>   - Tenable SC has custom & template reports
+>       - Additional vendor-provided report templates are available on the SC feed
+>   - Administrators can enable generation of reports with Cyberscope or DISA ASR/ARF/Consolidated data
+>   - Supported Formats
+>       - | Report Type           | Description |
+>         | PDF                   | Portable Document Format, universally viewable |
+>         | CSV                   | Comma Separated Values, for import into spreadsheets or databases |
+>         | DISA ARF              | Assessment Result Format DISA standard |
+>         | DISA ASR              | Assessment Summary Results DISA standard |
+>         | DISA Consolidated ARF | Consolidated ARF DISA standard |
+>         | Cyberscope            | Reporting standard for FISMA compliance |
+>   - CyberScope
+>       - Department of Homeland Security & DoJ web application designed to streamline IT security reporting for federal agencies Federal Information Security Modernization Act (FISMA) compliance.
 
 ---
 
@@ -550,6 +595,24 @@ Contents
 ## L15 - ACAS Self-Diagnosis
 
 > - Goals
->   - 
+>   - Differentiate ACAS Scanner Status errors
+>   - Describe ACAS Scanner Status errors
 
-> - 
+> - Scanner Deployment Considerations
+>   - Scanning a device behind a NAT or proxy can return distorted results with false negatives & positives
+
+> - Status Errors
+>   - | Error                        | Problem | Fix/Check |
+>     | ---------------------------- | ------- | --------- |
+>     | Authentication Error         | Wrong auth for scanner | Confirm credentials match scanner configuration settings |
+>     | Certificate Mismatch         | Can't confirm scanner SSL certificate | Select different authentication type in configuration; for Nessus Scanner, confirm Certificate option file |
+>     | Connection Error             | Can't connect to scanner | Confirm scanner configuration IP/hostname; Confirm network traffic is permitted |
+>     | Connection Timeout (Red)     | Timeout when waiting for a scanner reply | Base techs physical check/restart; Contact PMO |
+>     | Invalid Configuration        | Scanner attempted to connect on port 0 | Confirm Port option uses a valid TCP port |
+>     | Plugins Out of Sync (Yellow) | Scanner plugins don't match SC plugins | Attempt manual plugin update; Contact PMO |
+>     | Protocol Error (Yellow)      | HTTPS negotiation error | Base techs restart; Contact PMO |
+>     | Reloading Scanner            | Nessus restarting | Wait for restart to complete |
+>     | Updating Plugins (Blue)      | Plugin update in progress | If persistent, update may have been interrupted |
+>     | Updating Status              | Status refresh in progress | Scans can continue to run in this status |
+>     | Upgrade Required             | Nessus Scanner version outdated | Update to continue scanning |
+>     | User Disabled                | Disabled by Tenable SC User |  |
