@@ -24,7 +24,7 @@ Contents
 
 > L9 - MECM Role-based Administration
 
-> L10 - DEMO - MECM Host Client
+> L10 - MECM Host Client
 
 > L11 - MECM Maintenance Windows
 
@@ -32,25 +32,19 @@ Contents
 
 > L13 - MECM Querying
 
-> L14 - DEMO - MECM Querying
+> L14 - MECM Querying
 
-> L15 - DEMO - MECM Reporting
+> L15 - MECM Reporting
 
 > L16 - MECM Report Distribution
 
-> L17 - DEMO - MECM Report
-
 > L18 - Monitoring MECM
-
-> L19 - DEMO - Monitoring MECM Client
 
 > L20 - MECM Compliance
 
 > L21 - Non-Client Deployment Overview within MECM
 
 > L22 - MECM Content Management: Application / Package
-
-> L23 - DEMO - MECM Content Distribution
 
 > L24 - MECM Application Management
 
@@ -626,7 +620,7 @@ Contents
 
 <br>
 
-## L10 - DEMO - MECM Host Client
+## L10 - MECM Host Client
 
 > - Goals
 >   - Define MECM client
@@ -946,7 +940,7 @@ Contents
 
 <br>
 
-## L14 - DEMO - MECM Querying
+## L14 - MECM Querying
 
 > - Goals
 >   - Discuss WMI Query Language (WQL) regarding MECM queries
@@ -964,7 +958,7 @@ Contents
 
 <br>
 
-## L15 - DEMO - MECM Reporting
+## L15 - MECM Reporting
 
 > - Goals
 >   - Differentiate SQL Server Reporting Services (SSRS) and Power BI (Business Intelligence)
@@ -1176,9 +1170,98 @@ Contents
 ## L21 - Non-Client Deployment Overview within MECM
 
 > - Goals
->   - 
+>   - Recall functions of distribution points within MECM
+>   - Recall Software Center integration with MECM
+>   - Discuss basics of content deployment
+>   - Discuss basics of application deployment
+>   - Discuss basics of software update deployment
 
-> - 
+> - Distribution Points
+>   - *"Distribution point groups provide a logical grouping of distribution points for content distribution"*
+>   - Used to to manaage and monitor content from a central location for distribution points that span multiple sites
+>   - Distribution point groups are collections of distribution points
+>   - Considerations
+>       - Add 1 or more distribution points from any site in the hierarchy to a distribution point group
+>       - Add a distribution point to more than one distribution point group
+>       - CM distributes content to all distribution points that are a member of the group
+>       - When adding a new distribution point to a group after an inititial content distribution, CM automatically distributes the content to the new member
+>       - Associate a collection with a distribution point group
+>           - When distributing content to that collection, CM determines which groups are associated with the collection
+
+> - Software Center - MECM
+>   - Used to request and install software VMO deploys
+>   - Installed when the CM client is installed
+>   - Software Center User Actions
+>       - Browse for and install applications, software updates, and OS updates
+>       - View software request history
+>       - View device compliance against organization policies
+>   - Features custom tabs to meet additional business requirements
+
+> - Content Deployment
+>   - After installing distribution points for CM, content can be deployed to them
+>   - Typlically, content transfers to distributin points across the network
+>   - After content transfers to a distribution, it can be updated, redistributed, removed, and validated
+
+> - Application Deployment
+>   - Application and Deployment Type
+>       - In CM, an application is a "box" that contains 1 or more sets of installation for a software package (known as deployment types), and instructions on how to deploy the software
+>       - An application requires at least one deployment type, which determines how to install an app (don't send an empty box)
+>       - Use more than one deployment type to configrue different content and installation for the same application
+>   - Requirements
+>       - In previous versions of CM, applications would be deployed to a device collection
+>           - Use requirements to specify more detailed criteria for an application deployment
+>       - CM evaluates requirements to determine whether it installs an application and any of its deployment types, then determines the correct deployment type to use
+>       - Every 7 days by default, the CM client reevaluates requirement rules to determine compliance
+>   - Global Conditions
+>       - A library of predefined requirements used with any application and deployment type
+>       - CM includes a set of built-in global conditions and custome ones can be created
+>   - Simulated Deployment
+>       - Evaluates the requirements, detection method, and dependencies for an application; results reported by the client without installing the application
+>   - Supersedence
+>       - CM lets VMO upgrade or replace existing applications user a superscedence relationship
+>       - Supercedence specifies a new deployment type to replace the old type of the superseded application
+>       - Superseded application can be uninstalled or upgrade
+
+> - Software Update Deployment
+>   - Steps of Synchronization at a Top-Level Site
+>       1. Software update synchronization starts
+>       2. WSUS Synchronization Manager requests the WSUS instance on the default SUP to start synchronization with its source
+>       3. Software update metadata is synched from the source; changes updated in the WSUS database
+>       4. When finished, WSUS Synchronization Manager synchs the metadata from the WSUS database to the CM database, stored in the database as a configuration item
+>       5. Configuration items sent to any existing child sites via database replication
+>       6. Upon successful snychronization, WSUS Synch manager creates a status message (6702)
+>       7. WSUS Synch Manager sends a synch request to any existing child sites
+>       8. WSUS Synch Manager sents requests one at a time to the WSUS instance running on each SUP at the top-level site
+>   - Steps of Synchronization at Child Sites
+>       1. The WSUS Synch Manager recieves a synch request from its parent site
+>       2. Requests the WSUS instance running on the default SUP to start synch
+>       3. Requests the WSUS instance running on the default SUP to start synch
+>       4. The WSUS instance on the SUP of the child site synchs software update metadata from the WSUS instance on the parent site
+>       5. Upon successful snychronization, WSUS Synch manager creates a status message (6702) 
+>       6. WSUS Synch Manager sends a synch request to any existing child sites
+>       7. WSUS Synch Manager sents requests one at a time to the WSUS instance running on each SUP at the top-level site
+>   - Software Update Compliance Assessment
+>       - Before deploying updates to clients in CM, scan for software update compliance
+>       - For each software update, a state message is created that contains the compliance state for the update
+>       - State messages sent in bulk to the management point and site server, compliance state inserted into site database, displays in CM Console
+>   - Compliance States
+>       - Required
+>           - Update is applicable and required on the client computer
+>           - Conditions
+>               - Update was not deployed to client
+>               - Update installed on client, but most recent state message wasn't insterted into site server database
+>               - Update installs but requires a restart
+>               - Update was deployed but not yet installed
+>       - Not Required
+>           - Update is not applicable
+>       - Installed
+>           - Update installed
+>       - Unknown
+>           - No state message recieved from client
+>               - The client didn't successfully scan for software update compliance
+>               - Scan finished successfully, but state message hasn't been processed on the site server
+>               - Scan finished successfully, but state message hasn't been recieved from child site
+>               - Scan finished successfully, but state message was corrupted and couldn't be processed
 
 ---
 
@@ -1187,20 +1270,64 @@ Contents
 ## L22 - MECM Content Management: Application / Package
 
 > - Goals
->   - 
+>   - Discuss basics of distribution for content deployment within MECM
+>   - Differentiate content types managed in the Software Library workspace within the MECM console
+>   - Describe the function of pre-staged content for application management
+>   - Discuss considerations for distributing pre-staged content
+>   - Differentiate options for managing content that has been transferred to a MECM distribution point
+>   - Recall function of maintenance windows within MECM
 
-> - 
+> - Distribution for Content Deployment
+>   - Once uploaded, patch packages are available to the entire AFIN
+>   - Locally created patches must be thoroughly tested and recieve approval through the Change Management process
+>   - Typically, VMO distributes content to distribution points so that it's available to clients
+>       - Exception is when VMO use on-demand content distribution
+>   - When distributing content, CM stores content files in a package, then distributes it to the distribution point
+>       - Package content pulled from the site server's content library
+>   - When a package contains source files, the site it's created on becomes the site owner for the content source
+>       - CM copies the source files from the path specified for the object to the content lobrary on the site server that owns it, then CM replicates it to additional sites
 
----
+> - Software Library
+>   - CM Software Library Workspace Objects / Content Types
+>       - Applications
+>       - Packages
+>       - Software Update Deployment Packages
+>       - Driver Packages
+>       - OS Images
+>       - OS Upgrade Packages
+>       - Boot Images
+>       - Task Sequence
+>           - Doesn't contain content; has associated content references
 
-<br>
+> - Application Management Pre-staged Content
+>   - A compressed file that contains the content files and associated metadata for a content type
+>   - Can be manually imported to another site server, secondary site, or distribution point
+>       - When importing pre-staged content files on a site server, the content files are added to its content library, then registers the content in the site server database
+>       - When importing pre-staged content files on a distribution point, the content files are added to its content library, then it sends a status message to the site server
 
-## L23 - DEMO - MECM Content Distribution
+> - Distributing Pre-staged Content
+>   - Limitations and Considerations
+>       - When the distribution point is located on the site server, don't enable the distribution point for pre-staged content
+>       - When the distribution point is configured as a pull-distribution point, don't enable it for pre-staged content; this will override the pull-distribution point configuration
+>       - Before pre-staging content to the distribution point, create the content library on the server and distribute content over the network at least once to prepare the content library
+>       - When pre-staging content for objects with a long package source path (>140 characters), the Extract Content command-line tool might fail
 
-> - Goals
->   - 
+> - Managing Content Options - Distribution Point
+>   - Options for managing content
+>       - Update content
+>           - Update content files on distribution points
+>           - Site copies content from original package source location to the content library on the site that owns the content source
+>       - Update content on schedule
+>       - Redistribute Content
+>       - Remove content
+>           - When content is associated with another package distributed to the same distribution point, it can't be removed
+>       - Validate content
+>           - Verifies integrity of content files on distribution points
 
-> - 
+> - Maintenance Windows
+>   - Used to define when CM can run impacting tasks on devices
+>   - Helps make sure that client configuration changes occur during times that don't affect productivity
+>   - Users can see the device's next maintenance windows on Software Center
 
 ---
 
@@ -1209,9 +1336,36 @@ Contents
 ## L24 - MECM Application Management
 
 > - Goals
->   - 
+>   - Discuss application types that can be deployed utilizing MECM
+>   - Discuss deployment settings regarding application management
 
-> - 
+> - Application Types Deployment
+>   - CM Application Types
+>       - Windows Installer
+>           - (msi)
+>       - Windows App Package and App Bundles
+>           - (appx, appxbundle, msix, msixbundle)
+>       - Windows App Package in the Microsoft Store
+>       - Script installer for third-party installers and script wrappers
+>       - Microsoft App-V v4 and v5
+>       - macOS
+>       - A non-OS deployment task sequence for complex apps
+>   - App types managed by non-client device management via on-premises device management
+>       - Windows Phone app package (xap)
+>       - Windows Phone app package in the Microsoft Store
+>       - Windows Installer through MDM (msi)
+>       - Web application
+
+> - Deployment Settings - Application Management
+>   - Create or simulate a deployment of an application to a device or user collection in CM; this deployment gives instructions to the CM client on how and when to install or uninstall the software
+>   - Before deploying an application, create at least one deployment type for it
+>   - Alternatate Features to Consider
+>       - If several applications need to deploy together, instead of creating multiple deployments, create an application group, which can be sent to a user or device collection as a single deployment
+>       - For more complex deployments, first test it with a simulated deployment, which tests teh applicability of a deployment without installing or uninstalling the application
+>           - A simulated deployment evaluates the detection method, requirements, and dependencies for a deployment type and reports the results in the Deployments node of the CM Monitoring workspace
+>           - Can only simulate the deployment of required applications, not packages or software updates
+>           - On-premises MDM-enrolled devices don't support simulated deployments, user experience, or scheduling settings
+>       - Phased deployments allow one to orchestrate a coordinated, sequenced rollout of software based on customizable criteria and groups
 
 ---
 
@@ -1220,9 +1374,58 @@ Contents
 ## L25 - MECM Software Update Management Process
 
 > - Goals
->   - 
+>   - Summarize impact of binary differential replication (BDR) on software update deployment packages within MECM
 
-> - 
+> - Binary Differential Replication (BDR)
+>   - CM uses BDR to update content that was previously distributed to other sites or remote distribution points
+>   - BDR minimizes the network bandwidth used to send updates for distributed content
+>       - Resends only new or changed content instead of the entire set of content source files
+>       - To support BDR's reduction of bandwidth usage, install the Remote Differential Compression feature on distribution points
+>   - When BDR is used, CM identifies changes to source files for each set of content previously distributed
+>       - When files in the source content change, the site creates a new incremental version of the content and replicates only the changed files to destination sites and distribution points
+>           - A file is considered changed if it's been renamed or moved, or if the content changes
+>       - CM supports up to 5 incremental versions of a content set before it resends the entire content set; the next change causes the site to create a new version of the content set, which is distributed to replace the previous set and its incremental versions
+>   - BDR is supported between each parent and child site in a hierarchy, and within a site between its server and its regular distribution points
+>   - BDR is not supported on pull-distribution points and content-enabled cloud management gateways
+>       - Pull-distribution points support file-level deltas and transfering new files, but not blocks within a file
+>   - Applications always use binary differential replication
+>   - BDR is optional for packages and not enabled by default
+>       - Configured when creating or editing a package
+>       - Always enabled for applications
+>   - Summary of BDR
+>       - CM's term for Windows Remote Differential Compression
+>       - Block-level differences
+>       - Always enabled for apps
+>       - Optional on legacy packages
+>       - If a file already exists on the distribution point, and there's a achange, the site uses BDR to replicated block-level change instead of the entire file; this behavior only applies when object uses BDR
+>   - Summary of Delta Replication
+>       - File-level differences
+>       - On by default, not configurable
+>       - When a package changes, the site checks for changes to individual files instead of the entire package
+>       - If a file changes, uses BDR to do the work
+>       - If there's a new file, copy the new file
+
+> - New Software Update Deployment
+>   - *"A software update deployment package is the vehicle used to download software updates to a network shared folder, and copy the software update source files to the content library on site servers and on distribution points that are defined in the deployment"*
+>   - The SMS Provider computer account and the admin who downloads the software updates both require write permissions to the package source
+>       - Restricting access to package source reduces risk of an attacker tampering with software update source files
+>   - When a deployment package is created, the content version is 1, and when the software update files are downloaded using the package, the content version increments to 2, so all new deployment packages start with a content version of 2
+>       - When the content of a deployment package changes the content version increments by 1
+>   - Clients install softtware updates in a deployment by using any distribution point that has the software updates availabe, regardless of the deployment package
+>       - Even if a package is deleted, clients can still install software updates in the deployment as long as each update was downloaded to another deployment package and is available on a distribution point the client can access
+>           - When the last deployment that contains a software update is deleted, clients cannot retrieve the software update
+
+> - Configure Software Update Deployment
+>   - After deploying software updates or when an automatic deployment rule runs and deploys updates, a deployment assignment policy is added to the machine policy for the site
+>   - Software Update Download->Distribution Point Flow
+>       1. Software updates are downloaded from a download location, the internet, or a network shared folder to the package source
+>       2. Copied from the package source to the content library on the site server
+>       3. Copied to the content library on the distribution point
+>   - When a client computer computer in the target collection for the deployment recieves the machine policy
+>       1. Software Update Client Agent starts an evaluation scan
+>       2. The client downloads the content for required software updates from a distribution point to the local client cache at the Software Available time set for the deployment
+>       3. The software updates are then available to install
+>       - Software updates in optional deployments (deployments without a deadline) are not downloaded until a user manually installs
 
 ---
 
@@ -1231,6 +1434,33 @@ Contents
 ## L26 - MECM Self-Diagnosis
 
 > - Goals
->   - 
+>   - Describe Configuration Manager Health Evaluation within MECM
+>   - Explain Management Point communication within MECM
+>   - Explain CMTrace functionality regarding MECM logs
+>   - Describe function of MECM logs
+>   - Describe CcmEval.exe Components within MECM
+>   - Explain usage of Reports for self-diagnostics
 
-> - 
+> - Configuration Manager Health Evaluation
+>   - *"The task for Configuration Manager Health Evaluation is ccmeval.exe; it can be used in addition to the Client Health Dashboard to assist in evaluating and remediating client health"*
+>   - ccmeval performs multiple client health checks, and can verify key areas
+>       - If needed, it will remediate issues, repaire WMI, or reinstall the client
+>       - Set to run daily for each client
+
+> - Management Point Communication
+>   - *"Proper communication between the client and the management point must take place for the client to receive policy for Applications, updates for the Windows OS as well existing Microsoft and 3rd Party Software"*
+
+> - CMTrace
+>   - A CM tool that allows the user to view and monitor log files
+>   - Helps to analyze log files by highlighting, filtering, and providing error lookup
+>   - Log File types
+>       - Log files in CM or Client Component Manger (CCM) format
+>       - Plain ASCII or Unicode text files, suck as Windows Installer logs
+
+> - MECM Logs
+>   - *"In Configuration Manager, client and site server components record process information in individual log files"*
+
+> - Usage of Reports
+>   - *"Reports help you gather, organize, and present information about users, hardware and software inventory, software updates, applications, site status, and other Configuration Manager operations in your organization"*
+>   - Reports in CM are stored in SSRS
+>   - Reports can be accesed in the Monitoring Tab of the CM console or by using Report Manager
